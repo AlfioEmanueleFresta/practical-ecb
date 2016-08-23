@@ -5,13 +5,10 @@ Preparation
 ___________
 
 Start the Virtual Machine and use your favourite browser to navigate to the
-web shell (port 12322) and Usermin (port 12323).
-
-
-### FIX PORT!! 
+web shell (port 12319) and Usermin (port 12323).
 
 In the ``ecb`` folder you can find the ``exercise1.py`` file. Edit this file
-using Usermin. You can execute the script by connecting to the webshell and
+using Usermin. You can execute the script by connecting to the web shell and
 typing:
 
 .. code:: bash
@@ -33,6 +30,8 @@ They both take three parameters:
    which is already provided in the ``ecb`` folder or you can upload your
    own PNG image to the ``ecb`` folder using Usermin. If you decide to do so,
    please use a small image -- as the functions are very slow on large images.
+   Also, keep in mind that for the purpose of this practical,
+   drawings are generally better than pictures.
 
 2. ``function``. This is a function which takes as the only argument a
    Python bytes literal, (e.g. ``b'This is a bytes literal'``), encrypts or
@@ -50,6 +49,8 @@ red colour component, one for the green colour and one for the blue component
 (width=N, height=M), the image is serialised as a single long bytes literal
 similar to:
 
+::
+
   R(0, 0), G(0, 0), B(0, 0), R(1, 0), G(1, 0), B(1, 0) ... R(N, 0), G(N, 0), B(N, 0),
       ...                                                                 ...
   R(0, M), G(0, M), B(0, M), R(1, M), G(1, M), B(1, M) ... R(N, M), G(N, M), B(N, M)
@@ -63,9 +64,9 @@ each pixel to:
 
   NEW_VALUE = 0xFF - NEW_VALUE
 
-Where 0xFF (255 in hexadecimal, 11111111 in bionary) is the maximum value for a byte.
+Where hexadecimal FF (255 in decimal, 11111111 in binary) is the maximum value for a byte.
 
-We could write a function which returns a list of inverted values, e.g.:
+We can write a function which returns a list of inverted values, e.g.:
 
 .. code:: python
 
@@ -83,7 +84,7 @@ Or, using Python 3's generator syntax:
     return [255 - pixel for pixel in image]
 
 
-Finally, we could invert an image by using:
+Finally, we can invert an image by using:
 
 .. code:: python
 
@@ -102,40 +103,63 @@ One of the first attempts at cryptography is the Caesar Cipher, named after
 Julius Caesar, who is said to have invented the method,
 dictator of the Roman Republic up until the year 44 BC.
 
+.. topic:: Exercise 0
+
+  Look at the following message:
+
+  ::
+    G  I  F  O  I     V  M  T  P  I
+
+  Can you immediately recognise what this message says?
+
+
 The method relies on shifting the alphabet by a number of positions, and replacing
 the letters in the message with the ones in the shifted alphabet.
 
-For example, if we shifted the roman alphabet by **5 characters**, we would get
+For example, if we shift the roman alphabet by **5 characters**, we get
 the following correspondences table:
 
-  **PLAIN TEXT**:  **A**  B  C  D  E  F  G  H  I  K  L  M  N  O  P  Q  R  S  T  V  X  Y  Z
-   **ENCRYPTED**:  T  V  X  Y  Z  **A**  B  C  D  E  F  G  H  I  K  L  M  N  O  P  Q  R  S
+::
 
-This table could be used to encipher the mesage:
+  PLAIN TEXT:  A  B  C  D  E  F  G  H  I  K  L  M  N  O  P  Q  R  S  T  V  X  Y  Z
+   ENCRYPTED:  T  V  X  Y  Z  A  B  C  D  E  F  G  H  I  K  L  M  N  O  P  Q  R  S
 
-  **PLAIN TEXT**:  M  O  L  T  O     B  R  A  V  O
-   **ENCRYPTED**:  G  I  F  O  I     V  M  T  P  I
+This table can be used to encipher the mesage:
+
+::
+
+  PLAIN TEXT:  M  O  L  T  O     B  R  A  V  O
+   ENCRYPTED:  G  I  F  O  I     V  M  T  P  I
 
 To decrypt the message, just shift the roman alphabet by **-5 characters**, e.g.:
 
-**PLAIN TEXT**:  **A**  B  C  D  E  F  G  H  I  K  L  M  N  O  P  Q  R  S  T  V  X  Y  Z
- **ENCRYPTED**:  F  G  H  I  K  L  M  N  O  P  Q  R  S  T  V  X  Y  Z  **A**  B  C  D  E
+::
+
+  PLAIN TEXT:  A  B  C  D  E  F  G  H  I  K  L  M  N  O  P  Q  R  S  T  V  X  Y  Z
+   ENCRYPTED:  F  G  H  I  K  L  M  N  O  P  Q  R  S  T  V  X  Y  Z  A  B  C  D  E
+
 
 And use the above table to decipher the message:
 
-   **ENCRYPTED**:  G  I  F  O  I     V  M  T  P  I
-  **PLAIN TEXT**:  M  O  L  T  O     B  R  A  V  O
+::
+
+   ENCRYPTED:  G  I  F  O  I     V  M  T  P  I
+  PLAIN TEXT:  M  O  L  T  O     B  R  A  V  O
 
 Clearly, this cipher makes it hard for humans to read encrypted text, but is
-nonetheless very weak. In fact, you can simply try all 22 possible shift combinations
+nonetheless very weak.
+
+In fact, you can simply try all 22 possible shift combinations
 very easily and quickly identify the correct one:
 
-   **0:   G  I  F  O  I     V  M  T  P  I**
+::
+
+   0:   G  I  F  O  I     V  M  T  P  I   <- Ciphertext
    1:   H  K  G  P  K     X  N  V  Q  K
    2:   I  L  H  Q  L     Y  O  X  R  L
    3:   K  M  I  R  M     Z  P  Y  S  M
    4:   L  N  K  S  N     A  Q  Z  T  N
-   **5:   M  O  L  T  O     B  R  A  V  O**
+   5:   M  O  L  T  O     B  R  A  V  O   <-- Plain text
    6:   N  P  M  V  P     C  S  B  X  P
    7:   O  Q  N  X  Q     D  T  C  Y  Q
    8:   P  R  O  Y  R     E  V  D  Z  R
@@ -159,7 +183,7 @@ This shows how it is not straightforward to distinguish strong from weak encrypt
 simply by looking at cyphertext. Or is it?
 
 
-.. topic:: Exercise 1
+.. topic:: Exercise 1.1
 
   Starting from the ``inverter`` function shown above, write a function called
   ``caesar`` which shifts the text by a number of positions of your choice,
@@ -168,7 +192,10 @@ simply by looking at cyphertext. Or is it?
   Remember that each pixel has a value between 0 and 255, and your
   function should also return values between 0 and 255.
 
-  Use the following code to generate an encrypted image using Caesar's Cipher:
+
+.. topic:: Exercise 1.2
+
+  Now use the following code to generate an encrypted image using Caesar's Cipher:
 
   .. code:: python
 
@@ -178,7 +205,8 @@ simply by looking at cyphertext. Or is it?
 
 
 You can probably see that the content of the image is still very easily
-recognisable.
+recognisable. In fact, you should immediately be able to recognise the
+image's contents, even if the colours look weird.
 
 
 Strong cryptography
@@ -218,16 +246,13 @@ You can get a function which works on bytes using the following code:
   Then, use Usermin to view the image you just created.
 
 
-This image should look completely random, and it should be nearly impossible to
-recognise its original contents.
+This image should look completely random, and it should be impossible to
+recognise immediately its original contents.
 
 
 Block Modes
 ___________
 
-
-
-......... TODO .........
 
 
 One big issue with block-mode encryption is that each block will always
