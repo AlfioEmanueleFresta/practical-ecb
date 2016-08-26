@@ -183,7 +183,7 @@ very easily and quickly identify the correct one:
    2:   I  L  H  Q  L     Y  O  X  R  L
    3:   K  M  I  R  M     Z  P  Y  S  M
    4:   L  N  K  S  N     A  Q  Z  T  N
-   5:   M  O  L  T  O     B  R  A  V  O   <-- Plain text
+   5:   M  O  L  T  O     B  R  A  V  O   <- Plain text
    6:   N  P  M  V  P     C  S  B  X  P
    7:   O  Q  N  X  Q     D  T  C  Y  Q
    8:   P  R  O  Y  R     E  V  D  Z  R
