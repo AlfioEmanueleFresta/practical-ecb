@@ -26,7 +26,7 @@ In this file the following two functions have been imported:
 
 They both take three parameters:
 
-1. ``input_file`` the name of an input image file. You can use ``tux.png``
+1. ``input_file``. This is the name of an input image file. You can use ``tux.png``
    which is already provided in the ``ecb`` folder or you can upload your
    own PNG image to the ``ecb`` folder using Usermin. If you decide to do so,
    please use a small image -- as the functions are very slow on large images.
@@ -35,7 +35,7 @@ They both take three parameters:
 
 2. ``function``. This is a function which takes as the only argument a
    Python bytes literal, (e.g. ``b'This is a bytes literal'``), encrypts or
-   decrypts it (depending on which of the two functions you're using) and
+   decrypts it (depending on which of the two imported functions you're using) and
    returns another bytes literal.
 
 3. ``output_file`` the name to use to save the output image file, once processed
@@ -43,11 +43,14 @@ They both take three parameters:
    if you use the name of an existing image, this will be overwritten.
 
 
-The function will operate on bytes. Each pixel is represented as three bytes, one for the value of the
+The function provided to one these functions will operate on bytes.
+Each pixel is represented as three bytes, one for the value of the
 red colour component, one for the green colour and one for the blue component
-(R, G, B). Then, pixels are serialised rows first, i.e. for an image of size
-(width=N, height=M), the image is serialised as a single long bytes literal
-similar to:
+(R, G, B). Then, pixels are serialised rows first.
+
+For example, an image large 200x300 pixels is represented by a bytes literal
+of 200 * 300 * 3 bytes. In general, an RGB image of width N=200 and height M=300
+is represented by a bytes literal of N * M * 3 bytes, ordered as following:
 
 ::
 
@@ -55,9 +58,11 @@ similar to:
       ...                                                                 ...
   R(0, M), G(0, M), B(0, M), R(1, M), G(1, M), B(1, M) ... R(N, M), G(N, M), B(N, M)
 
+
+Where R(x, y) is the value of the red colour component at position (x, y).
+
 Please note that position (0, 0) is the top left corner, and (N, M) is the
 bottom right corner. This is commonplace with computer images.
-
 
 For example, if we want to negativise an image, we want to update the value of
 each pixel to:
@@ -95,6 +100,17 @@ One this code has been executed, a new image ``inverted.png`` should appear
 showing the penguin with inverted colours.
 
 
+.. figure:: images/tux.png
+
+   ``tux.png``
+
+
+.. figure:: images/inverted.png
+
+  ``inverted.png``
+
+
+
 
 Caesar Cipher
 -------------
@@ -108,6 +124,7 @@ dictator of the Roman Republic up until the year 44 BC.
   Look at the following message:
 
   ::
+
     G  I  F  O  I     V  M  T  P  I
 
   Can you immediately recognise what this message says?
@@ -131,7 +148,7 @@ This table can be used to encipher the mesage:
   PLAIN TEXT:  M  O  L  T  O     B  R  A  V  O
    ENCRYPTED:  G  I  F  O  I     V  M  T  P  I
 
-To decrypt the message, just shift the roman alphabet by **-5 characters**, e.g.:
+To decipher the message, just shift the roman alphabet by **-5 characters**, e.g.:
 
 ::
 
@@ -139,14 +156,15 @@ To decrypt the message, just shift the roman alphabet by **-5 characters**, e.g.
    ENCRYPTED:  F  G  H  I  K  L  M  N  O  P  Q  R  S  T  V  X  Y  Z  A  B  C  D  E
 
 
-And use the above table to decipher the message:
+And use the above table to read the message:
 
 ::
 
    ENCRYPTED:  G  I  F  O  I     V  M  T  P  I
   PLAIN TEXT:  M  O  L  T  O     B  R  A  V  O
 
-Clearly, this cipher makes it hard for humans to read encrypted text, but is
+
+Clearly, this cipher makes it hard for humans to immediately read encrypted text, but is
 nonetheless very weak.
 
 In fact, you can simply try all 22 possible shift combinations
@@ -250,36 +268,78 @@ This image should look completely random, and it should be impossible to
 recognise immediately its original contents.
 
 
+Information
+___________
+
+It is important to recognise that the information contained in a message is not
+directly represented as data. In fact, the information can also be represented
+by the difference in the data, as it happens with the image above.
+
+* The information 'the penguin is white' is represented directly by the colour
+  value of each individual byte, therefore by the data.
+
+* On the other hand, the information 'the image contains a penguin', is represented
+  by the difference there is between the values and their position in the message.
+
+This is an important distinction to recognise when encrypting data, if the purpose
+is to make information invisible to an attacker. As a consequence, an appropriate
+encryption method must be used.
+
+
 Block Modes
 ___________
 
+Even very strong cryptographic primitives can be used wrongly. As an example,
+AES is generally considered a strong primitive. This can be adopted in a
+cryptosystem in different modes. The most basilar mode is ECB mode:
 
 
-One big issue with block-mode encryption is that each block will always
-encrypt to the same ciphertext.
+.. figure:: images/ecb-wikipedia.png
+
+  ECB mode encryption. From Wikipedia, the free encyclopedia.
+
+
+As you can see from the diagram above, the plaintext is split into
+blocks of bytes and are separately fed into a Block Cipher Encryption
+algorithm (such as AES), all using the same key.
+
+This can sometimes be a good practical advantage, as the encryption can be
+easily parallelised across multiple cores, and gives a significant speed-up.
+
+On the other hand, one significant issue with this mode of encryption is that
+each block will always encrypt to the same ciphertext.
+
+The ``cp_ecb`` library provides a way to get an ECB encrypter function. Look
+at the following example using text, that you can reproduce, if you want,
+using the interactive Python terminal (type ``python3`` in the webshell).
 
 .. code:: python
 
   >> from cp_ecb import get_ecb_encrypter
   >> encrypter = get_ecb_encrypter(key="My secret key")
 
-  >>> encrypter(b'This is a very long message, which contains similar blocks. This is the first message.')
-  b'P\xf9\xcd\x07\x16\x0c ... \xc9\xd0\xe8z\xf7\x93] ... \x98(\x88\x1d'
-       ^   ^   ^   ^   ^  ...   ^                          ^ ^  ^   ^
+  >>> # Get two different strings, with a common block
+  >>> first  = b'AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBB'
+  >>> second = b'AAAAAAAAAAAAAAAACCCCCCCCCCCCCCCC'
 
-  >>> encrypter(b'This is a very long message, which contains similar blocks. This is the secon message.')
-  b'P\xf9\xcd\x07\x16\x0c ... \xc9\xd0\xe8z\xf7;\xd6 ... \x98(\x88\x1d'
-       ^   ^   ^   ^   ^  ...   ^                          ^ ^  ^   ^
+  >>> encrypter(first)
+  b'\xdalAZ}yu{\x88\x14k\xfe\xb9\x88\xf7\xb3\xb1\x10n-\xf4\xba\x01\x90*\xea\x85\xb1\xae2dt\xb1\x10n-\xf4\xba\x01\x90*\xea\x85\xb1\xae2dt'
 
-
-You can see that the first and the last part of the message, which is equal in the plaintext, is also equal
-in the ciphertext.
+  >>> encrypter(second)
+  b'\xdalAZ}yu{\x88\x14k\xfe\xb9\x88\xf7\xb3\xedVP\x12\x90o\x99\xe0\xcd\xd41TR\xa3\x88l\xb1\x10n-\xf4\xba\x01\x90*\xea\x85\xb1\xae2dt'
 
 
-......... TODO .........
+You can probably recognise that the first half of the encrypted strings are,
+in fact, identical.
 
-
+A better understanding of the problem can be obtained using images.
 
 .. topic:: Exercise 3
 
-  Use
+  Use the ECB mode encrypter function provided in ``cp_ecb`` to encrypt
+  the image ``tux.png``, saving the result as ``tux-ecb.png``.
+
+  See the effect of ECB-mode encryption on the image.
+
+Even if the details are hidden, it should still be possible to recognise
+the shape of the penguin in the ECB-mode encrypted image.
