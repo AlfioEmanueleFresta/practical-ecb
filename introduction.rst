@@ -12,3 +12,6 @@ ___________________
 
 Prerequisites, Equipment and Software
 _____________________________________
+
+To complete the exercises, the student will need to fill in parts of a few Python
+scripts. Therefore, knowledge of the Python programming language is required.
