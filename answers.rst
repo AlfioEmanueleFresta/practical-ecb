@@ -54,11 +54,14 @@ ECB encryption
 Extension Challenge
 ----------------------------------------
 
+Changing the lowest order bit affects the parity of each byte. This can
+be used to determine whether the byte contains information or not, e.g.:
+
 .. code:: python
 
   from cp_ecb import decrypt_image_file
 
-  
+
   # Define ON and OFF
   ON, OFF = 0xFF, 0x00
 

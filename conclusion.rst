@@ -17,7 +17,7 @@ disclosure wrote to its users:
 
   “The attackers may have gained access to your… encrypted password.”
 
-This is a worrying statement, as encryption is not reccommended for storing passwords. In fact,
+This is a worrying statement, as encryption is not recommended for storing passwords. In fact,
 today's norm for password storage is using a one-way mathematical function
 called a *hash* that generally depends on the password, but that can't be
 inverted and used to retrieve the password.
@@ -49,7 +49,7 @@ The combinations of these mistakes meant that:
     From https://xkcd.com/1286/.
 
 
-* As the same criptographic key was used to encrypt all of the users' passwords,
+* As the same cryptographic key was used to encrypt all of the users' passwords,
   if the key is leaked or brute-forced, all passwords could be decrypted
   in a matter of minutes.
 

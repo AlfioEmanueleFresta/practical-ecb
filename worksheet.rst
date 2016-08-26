@@ -64,7 +64,7 @@ Where R(x, y) is the value of the red colour component at position (x, y).
 Please note that position (0, 0) is the top left corner, and (N, M) is the
 bottom right corner. This is commonplace with computer images.
 
-For example, if we want to negativise an image, we want to update the value of
+For example, if we want to invert the colours of an image, we want to update the value of
 each pixel to:
 
   NEW_VALUE = 0xFF - NEW_VALUE
@@ -198,7 +198,7 @@ very easily and quickly identify the correct one:
 
 
 This shows how it is not straightforward to distinguish strong from weak encryption
-simply by looking at cyphertext. Or is it?
+simply by looking at ciphertext. Or is it?
 
 
 .. topic:: Exercise 1.1
@@ -246,7 +246,7 @@ You can get a function which works on bytes using the following code:
   >>> from cp_ecb import get_stream_cipher
   >>> cipher = get_stream_cipher(seed="My secret key")
 
-  # Encrypting a secret mesage.
+  # Encrypting a secret message.
   >>> ciphertext = cipher(b'This is a secret message')
   >>> ciphertext
   b'\x0f\xef\x8e\xa9c\x9co\xd0\xect\xf7\x0cE\xa0\xaev\xe6\xd2\x8c?\x90\x0e{\xd2'
@@ -311,7 +311,7 @@ each block will always encrypt to the same ciphertext.
 
 The ``cp_ecb`` library provides a way to get an ECB encrypter function. Look
 at the following example using text, that you can reproduce, if you want,
-using the interactive Python terminal (type ``python3`` in the webshell).
+using the interactive Python terminal (type ``python3`` in the web shell).
 
 .. code:: python
 
