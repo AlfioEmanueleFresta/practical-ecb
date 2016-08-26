@@ -7,7 +7,7 @@ ___________
 Start the Virtual Machine and use your favourite browser to navigate to the
 web shell (port 12319) and Usermin (port 12323).
 
-In the ``ecb`` folder you can find the ``exercise1.py`` file. Edit this file
+In the ``/home/student/ecb/`` folder you can find the ``exercise1.py`` file. Edit this file
 using Usermin. You can execute the script by connecting to the web shell and
 typing:
 
@@ -110,6 +110,12 @@ showing the penguin with inverted colours.
   ``inverted.png``
 
 
+You can then use the same function on the image to invert it again
+and obtain the original image, e.g.:
+
+.. code:: python
+
+  decrypt_image_file("inverted.png", inverter, "inverted-twice.png")
 
 
 Caesar Cipher
@@ -256,7 +262,9 @@ You can get a function which works on bytes using the following code:
   b'This is a secret message'
 
 
-.. topic:: Exercise 2
+.. topic:: Exercise 2.1
+
+  Use Usermin to edit the file ``/home/student/ecb/exercise2.py``.
 
   Encrypt the image ``tux.png`` using a stream cipher and save it with the
   filename ``stream-cipher.png``.
@@ -268,6 +276,17 @@ This image should look completely random, and it should be impossible to
 recognise immediately its original contents.
 
 
+.. topic:: Exercise 2.2
+
+  With stream ciphers, you can use the same cipher to decrypt the image.
+
+  Using ``decrypt_image_file`` and your implementation of the stream
+  cipher, decrypt ``stream-cipher.png`` to ``stream-cipher-decrypted.png``.
+
+  Then, use Usermin to view the image you just created, and check that
+  it has, in fact, restored the original image.
+
+
 Information
 ___________
 
@@ -275,10 +294,10 @@ It is important to recognise that the information contained in a message is not
 directly represented as data. In fact, the information can also be represented
 by the difference in the data, as it happens with the image above.
 
-* The information 'the penguin is white' is represented directly by the colour
+* The information *'the penguin is white'* is represented directly by the colour
   value of each individual byte, therefore by the data.
 
-* On the other hand, the information 'the image contains a penguin', is represented
+* On the other hand, the information *'the image contains a penguin'*, is represented
   by the difference there is between the values and their position in the message.
 
 This is an important distinction to recognise when encrypting data, if the purpose
@@ -335,6 +354,8 @@ in fact, identical.
 A better understanding of the problem can be obtained using images.
 
 .. topic:: Exercise 3
+
+  Use Usermin to edit the file ``/home/student/ecb/exercise3.py``.
 
   Use the ECB mode encrypter function provided in ``cp_ecb`` to encrypt
   the image ``tux.png``, saving the result as ``tux-ecb.png``.
