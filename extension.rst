@@ -6,11 +6,11 @@ Steganography
 _____________
 
 Steganography is the practice of concealing a secret message within another.
-For example, the hidden message may be in invisible ink.
+For example, the hidden message may be writte in invisible ink between
+the lines of a letter.
 
-In images, there are many ways of hiding content. One of the easiest ways
+There are many ways of hiding content in images. One of the easiest ways
 is to hide the information in the lowest order bits of each byte.
-
 
 
 .. topic:: Extension Exercise
