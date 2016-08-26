@@ -11,6 +11,7 @@ Contents:
     worksheet
     conclusion
     answers
+    extension
 
 Indices and tables
 ==================
