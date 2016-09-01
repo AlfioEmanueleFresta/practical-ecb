@@ -38,17 +38,17 @@ They both take three parameters:
    decrypts it (depending on which of the two imported functions you're using) and
    returns another bytes literal.
 
-3. ``output_file`` the name to use to save the output image file, once processed
+3. ``output_file``. This is the name to use to save the output image file, once processed
    its contents using ``function``. This should end in ``.png``. Please note that
    if you use the name of an existing image, this will be overwritten.
 
 
-The function provided to one these functions will operate on bytes.
+The ``function`` provided to these methods will operate on bytes.
 Each pixel is represented as three bytes, one for the value of the
 red colour component, one for the green colour and one for the blue component
 (R, G, B). Then, pixels are serialised rows first.
 
-For example, an image large 200x300 pixels is represented by a bytes literal
+For example, an image of size 200x300 pixels is represented by a bytes literal
 of 200 * 300 * 3 bytes. In general, an RGB image of width N=200 and height M=300
 is represented by a bytes literal of N * M * 3 bytes, ordered as following:
 
@@ -135,6 +135,9 @@ dictator of the Roman Republic up until the year 44 BC.
 
   Can you immediately recognise what this message says?
 
+  Hint:
+    No, you should not be able to.
+
 
 The method relies on shifting the alphabet by a number of positions, and replacing
 the letters in the message with the ones in the shifted alphabet.
@@ -210,7 +213,7 @@ simply by looking at ciphertext. Or is it?
 .. topic:: Exercise 1.1
 
   Starting from the ``inverter`` function shown above, write a function called
-  ``caesar`` which shifts the text by a number of positions of your choice,
+  ``caesar`` which shifts the values by a number of positions of your choice,
   effectively using Caesar's Cipher.
 
   Remember that each pixel has a value between 0 and 255, and your
@@ -294,13 +297,13 @@ It is important to recognise that the information contained in a message is not
 directly represented as data. In fact, the information can also be represented
 by the difference in the data, as it happens with the image above.
 
-* The information *'the penguin is white'* is represented directly by the colour
-  value of each individual byte, therefore by the data.
+The information *'the penguin is white'* is represented directly by the colour
+value of each individual byte, therefore by the data.
 
-* On the other hand, the information *'the image contains a penguin'*, is represented
-  by the difference there is between the values and their position in the message.
+On the other hand, the information *'the image contains a penguin'*, is represented
+by the difference there is between the values and their position in the message.
 
-This is an important distinction to recognise when encrypting data, if the purpose
+This is an important distinction to recognise when encrypting data if the purpose
 is to make information invisible to an attacker. As a consequence, an appropriate
 encryption method must be used.
 
@@ -308,9 +311,10 @@ encryption method must be used.
 Block Modes
 ___________
 
-Even very strong cryptographic primitives can be used wrongly. As an example,
+Even very strong cryptographic primitives can be used incorrectly. As an example,
 AES is generally considered a strong primitive. This can be adopted in a
-cryptosystem in different modes. The most basilar mode is ECB mode:
+cryptosystem in different modes. The most basilar mode is Electronic
+Code Block (ECB) mode:
 
 
 .. figure:: images/ecb-wikipedia.png
@@ -328,7 +332,7 @@ easily parallelised across multiple cores, and gives a significant speed-up.
 On the other hand, one significant issue with this mode of encryption is that
 each block will always encrypt to the same ciphertext.
 
-The ``cp_ecb`` library provides a way to get an ECB encrypter function. Look
+The ``cp_ecb`` library provides a way to get an ECB encryption function. Look
 at the following example using text, that you can reproduce, if you want,
 using the interactive Python terminal (type ``python3`` in the web shell).
 
