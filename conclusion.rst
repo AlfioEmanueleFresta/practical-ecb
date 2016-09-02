@@ -32,7 +32,7 @@ encrypting all passwords with a secret key.
 
 The block size used for the blocks was also very small: only 8 bytes.
 
-Moreover, the password hints were stored in plain text and stored together
+Moreover, the password hints were stored in plain text together
 with the encrypted passwords.
 
 The combinations of these mistakes meant that:

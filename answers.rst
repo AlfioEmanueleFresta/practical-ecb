@@ -15,7 +15,7 @@ Caesar Cipher
     output = []
 
     for value in image:
-      output += [(value + KEY) % 0xFF]
+      output.append((value + KEY) % 0xFF)
 
     return output
 
@@ -44,6 +44,7 @@ ECB encryption
 
   from cp_ecb import encrypt_image_file, get_ecb_encrypter
 
+
   # Get an ECB-encrypter function given the secret key
   encrypter = get_ecb_encrypter(key="This is my secret key")
 
@@ -71,9 +72,9 @@ be used to determine whether the byte contains information or not, e.g.:
 
     for value in image:  # For each byte in the image
       if value % 2 == 0:  # Check parity
-        output += [ON]
+        output.append(ON)
       else:
-        output += [OFF]
+        output.append(OFF)
 
     return output
 

@@ -43,10 +43,10 @@ They both take three parameters:
    if you use the name of an existing image, this will be overwritten.
 
 
-The ``function`` provided to these methods will operate on bytes.
-Each pixel is represented as three bytes, one for the value of the
-red colour component, one for the green colour and one for the blue component
-(R, G, B). Then, pixels are serialised rows first.
+**The ``function`` provided to these methods will operate on bytes.**
+**Each pixel is represented as three bytes, one for the value of the**
+**red colour component, one for the green colour and one for the blue component**
+**(R, G, B). Then, pixels are serialised rows first.**
 
 For example, an image of size 200x300 pixels is represented by a bytes literal
 of 200 * 300 * 3 bytes. In general, an RGB image of width N=200 and height M=300
@@ -78,7 +78,7 @@ We can write a function which returns a list of inverted values, e.g.:
   def inverter(image):
     output = []
     for pixel in image:
-      output += [255 - pixel]
+      output.append(255 - pixel)
     return output
 
 Or, using Python 3's generator syntax:
